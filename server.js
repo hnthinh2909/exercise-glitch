@@ -6,13 +6,9 @@
 const express = require("express");
 const app = express();
 const pug = require("pug");
-const bodyParser = require("body-parser");
 
 app.set("view engine", "pug");
 app.set("views", "./views");
-
-app.use(bodyParser.json()) // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 var todos = [
   { id: 1, work: "Wake up" },
@@ -28,7 +24,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/todos", (req, res) => {
-  res.render("list", { todos: todos });
+  res.render("list", { todoList: todos });
 });
 
 app.get('/todos/search', function(req, res) {
@@ -41,16 +37,6 @@ app.get('/todos/search', function(req, res) {
     todos: matchedUsers
   });
 });
-
-app.get('/todos/create', function(req, res) {
-  res.render("./create")
-})
-
-app.post('/todos/create', function(req, res) {
-  todos.push(req.body);
-  res.redirect("/todos");
-})
-
 // listen for requests :)
 app.listen(process.env.PORT, () => {
   console.log("Server listening on port " + process.env.PORT);
